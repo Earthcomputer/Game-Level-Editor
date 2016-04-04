@@ -60,6 +60,8 @@ public class LevelEditor
 	public static boolean gridSnap = true;
 	public static boolean replace = true;
 	
+	public static JFrame window;
+	
 	public static void main(String[] args)
 	{
 		try
@@ -117,7 +119,8 @@ public class LevelEditor
 		}
 		else if(answer == JOptionPane.CLOSED_OPTION){ return; }
 		
-		final JFrame window = new JFrame("Github Game Level Editor");
+		window = new JFrame();
+		refreshWindowTitle();
 		window.setContentPane(new JPanel() {
 			private static final long serialVersionUID = -4406165240495985709L;
 			
@@ -334,12 +337,67 @@ public class LevelEditor
 					
 				});
 				
+				inputs.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, 0), "changeName");
+				actions.put("changeName", new AbstractAction() {
+					private static final long serialVersionUID = -9150378420939592943L;
+					
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						String newName = JOptionPane.showInputDialog(null, "Enter the new name of this level:",
+							"Enter New Name", JOptionPane.QUESTION_MESSAGE);
+						if(newName != null)
+						{
+							editingLevel.name = newName;
+							refreshWindowTitle();
+						}
+					}
+					
+				});
+				
+				inputs.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "changeDimensions");
+				actions.put("changeDimensions", new AbstractAction() {
+					private static final long serialVersionUID = 860734003639836461L;
+					
+					@Override
+					public void actionPerformed(ActionEvent e)
+					{
+						String newWidthString = JOptionPane.showInputDialog(null, "Enter the new width:",
+							"Enter New Dimensions", JOptionPane.QUESTION_MESSAGE);
+						int newWidth;
+						try
+						{
+							newWidth = Integer.parseInt(newWidthString);
+						}
+						catch (Exception e1)
+						{
+							return;
+						}
+						if(newWidth <= 0) return;
+						String newHeightString = JOptionPane.showInputDialog(null, "Enter the new height:",
+							"Enter New Dimensions", JOptionPane.QUESTION_MESSAGE);
+						int newHeight;
+						try
+						{
+							newHeight = Integer.parseInt(newHeightString);
+						}
+						catch (Exception e1)
+						{
+							return;
+						}
+						if(newHeight <= 0) return;
+						editingLevel.levelWidth = newWidth;
+						editingLevel.levelHeight = newHeight;
+					}
+					
+				});
+				
 				addMouseListener(new MouseAdapter() {
 					
 					@Override
 					public void mousePressed(MouseEvent e)
 					{
-						Point hoveredLocation = getHoveredLocation(window);
+						Point hoveredLocation = getHoveredLocation();
 						if(hoveredLocation != null)
 						{
 							if((e.getButton() == MouseEvent.BUTTON1 && replace) || e.getButton() == MouseEvent.BUTTON3)
@@ -411,7 +469,7 @@ public class LevelEditor
 				if(scrollX >= -640 && scrollX < 640 && scrollY >= 0 && scrollY < 480)
 					g.drawLine(Math.max(0, -scrollX), 480 - scrollY, Math.min(640, 640 - scrollX), 480 - scrollY);
 				g.setColor(Color.WHITE);
-				Point hoveredLocation = getHoveredLocation(window);
+				Point hoveredLocation = getHoveredLocation();
 				if(hoveredLocation != null)
 					g.drawString(String.format("Hovered Location: (%d, %d)", hoveredLocation.x, hoveredLocation.y), 2,
 						10);
@@ -458,6 +516,7 @@ public class LevelEditor
 		window.getContentPane().setPreferredSize(new Dimension(640, 480));
 		window.pack();
 		window.setLocationRelativeTo(null);
+		window.setResizable(false);
 		window.setVisible(true);
 		timer.start();
 	}
@@ -491,6 +550,8 @@ public class LevelEditor
 		}
 		
 		editingFile = openedFile;
+		
+		refreshWindowTitle();
 		
 		return true;
 	}
@@ -531,6 +592,7 @@ public class LevelEditor
 		File savingFile = showSaveDialog();
 		if(savingFile == null) return;
 		editingFile = savingFile;
+		refreshWindowTitle();
 		userPressedSave();
 	}
 	
@@ -629,7 +691,7 @@ public class LevelEditor
 		return selectedFile;
 	}
 	
-	public static Point getHoveredLocation(JFrame window)
+	public static Point getHoveredLocation()
 	{
 		Point mouseLocation = new Point(MouseInfo.getPointerInfo().getLocation());
 		Point compLocation = window.getContentPane().getLocationOnScreen();
@@ -639,6 +701,12 @@ public class LevelEditor
 		mouseLocation.x += scrollX;
 		mouseLocation.y += scrollY;
 		return mouseLocation;
+	}
+	
+	public static void refreshWindowTitle()
+	{
+		if(window != null) window.setTitle(String.format("%s (in %s) - Github Game Level Editor", editingLevel.name,
+			editingFile == null ? "no file" : editingFile.getName()));
 	}
 	
 }
