@@ -9,12 +9,14 @@ public enum EnumObjectType
 		EnumObjectRenderShape.FULL_SQUARE, Color.WHITE), RED_WALL(2, "RedWall", EnumObjectRenderShape.FULL_SQUARE,
 			Color.RED), GREEN_WALL(3, "GreenWall", EnumObjectRenderShape.FULL_SQUARE, Color.GREEN), BLUE_WALL(4,
 				"BlueWall", EnumObjectRenderShape.FULL_SQUARE, Color.BLUE), YELLOW_WALL(5, "YellowWall",
-					EnumObjectRenderShape.FULL_SQUARE, Color.YELLOW), STAR(6, "Star", EnumObjectRenderShape.STAR,
-						Color.WHITE), COLOR_SWITCHER(7, "ColorSwitcher", EnumObjectRenderShape.COLOR_SWITCHER,
+					EnumObjectRenderShape.FULL_SQUARE, Color.YELLOW), STAR1(6, "Star1", EnumObjectRenderShape.STAR,
+						Color.RED), COLOR_SWITCHER(7, "ColorSwitcher", EnumObjectRenderShape.COLOR_SWITCHER,
 							Color.WHITE), FLYING_CROSS(8, "FlyingCross", EnumObjectRenderShape.CROSS,
 								Color.WHITE), HOPPING_TRIANGLE(9, "HoppingTriangle", EnumObjectRenderShape.TRIANGLE_UP,
-									Color.RED), EXIT(10, "Exit", EnumObjectRenderShape.CIRCLE, Color.PINK);
-									
+									Color.RED), EXIT(10, "Exit", EnumObjectRenderShape.CIRCLE, Color.PINK), STAR2(11,
+										"Star2", EnumObjectRenderShape.STAR,
+										Color.GREEN), STAR3(12, "Star3", EnumObjectRenderShape.STAR, Color.BLUE);
+										
 	private static final String[] NAMES;
 	
 	private final int id;

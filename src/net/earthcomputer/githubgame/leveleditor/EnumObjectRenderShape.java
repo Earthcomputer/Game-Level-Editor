@@ -42,6 +42,7 @@ public enum EnumObjectRenderShape
 				g.fillRect(x + 8, y + 10, 8, 2);
 				break;
 			case STAR:
+				g.fillRect(x, y, 16, 16);
 				g.drawImage(STAR_IMAGE, x, y, null);
 				break;
 			case COLOR_SWITCHER:

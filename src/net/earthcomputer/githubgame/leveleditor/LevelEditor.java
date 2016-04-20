@@ -513,10 +513,10 @@ public class LevelEditor
 			}
 			
 		});
+		window.setResizable(false);
 		window.getContentPane().setPreferredSize(new Dimension(640, 480));
 		window.pack();
 		window.setLocationRelativeTo(null);
-		window.setResizable(false);
 		window.setVisible(true);
 		timer.start();
 	}
