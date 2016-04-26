@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 public enum EnumObjectRenderShape
 {
-	FULL_SQUARE, PLAYER, STAR, COLOR_SWITCHER, CROSS, TRIANGLE_UP, CIRCLE;
+	FULL_SQUARE, PLAYER, STAR, ELEMENT_SWITCHER, CROSS, TRIANGLE_UP, CIRCLE;
 	
 	private static final BufferedImage STAR_IMAGE;
 	
@@ -36,7 +36,7 @@ public enum EnumObjectRenderShape
 				break;
 			case PLAYER:
 				g.fillRect(x, y, 16, 16);
-				g.setColor(Color.RED);
+				g.setColor(Color.WHITE);
 				g.fillRect(x + 8, y + 3, 2, 2);
 				g.fillRect(x + 12, y + 3, 2, 2);
 				g.fillRect(x + 8, y + 10, 8, 2);
@@ -45,14 +45,14 @@ public enum EnumObjectRenderShape
 				g.fillRect(x, y, 16, 16);
 				g.drawImage(STAR_IMAGE, x, y, null);
 				break;
-			case COLOR_SWITCHER:
-				g.setColor(Color.RED);
+			case ELEMENT_SWITCHER:
+				g.setColor(Color.GREEN.darker());
 				g.fillPolygon(new int[] { x, x + 16, x + 8 }, new int[] { y, y, y + 8 }, 3);
-				g.setColor(Color.GREEN);
-				g.fillPolygon(new int[] { x + 16, x + 16, x + 8 }, new int[] { y, y + 16, y + 8 }, 3);
 				g.setColor(Color.BLUE);
+				g.fillPolygon(new int[] { x + 16, x + 16, x + 8 }, new int[] { y, y + 16, y + 8 }, 3);
+				g.setColor(Color.CYAN.darker());
 				g.fillPolygon(new int[] { x + 16, x, x + 8 }, new int[] { y + 16, y + 16, y + 8 }, 3);
-				g.setColor(Color.YELLOW);
+				g.setColor(Color.ORANGE);
 				g.fillPolygon(new int[] { x, x, x + 8 }, new int[] { y + 16, y, y + 8 }, 3);
 				break;
 			case CROSS:
