@@ -4,19 +4,26 @@ import java.awt.Color;
 
 public enum EnumObjectType
 {
+	// @format-off
+	PLAYER				(0	, "Player"			, EnumObjectRenderShape.PLAYER				, Color.GREEN.darker()),
+	SOLID_WALL			(1	, "SolidWall"		, EnumObjectRenderShape.FULL_SQUARE			, Color.WHITE),
+	EARTH_WALL			(2	, "EarthWall"		, EnumObjectRenderShape.FULL_SQUARE			, Color.GREEN.darker()),
+	WATER_WALL			(3	, "WaterWall"		, EnumObjectRenderShape.FULL_SQUARE			, Color.BLUE),
+	AIR_WALL			(4	, "AirWall"			, EnumObjectRenderShape.FULL_SQUARE			, Color.CYAN.darker()),
+	FIRE_WALL			(5	, "FireWall"		, EnumObjectRenderShape.FULL_SQUARE			, Color.ORANGE),
+	STAR1				(6	, "Star1"			, EnumObjectRenderShape.STAR				, Color.RED),
+	STAR2				(11	, "Star2"			, EnumObjectRenderShape.STAR				, Color.GREEN),
+	STAR3				(12	, "Star3"			, EnumObjectRenderShape.STAR				, Color.BLUE),
+	ELEMENT_SWITCHER	(7	, "ElementSwitcher"	, EnumObjectRenderShape.ELEMENT_SWITCHER	, Color.WHITE),
+	FLYING_CROSS		(8	, "FlyingCross"		, EnumObjectRenderShape.CROSS				, Color.WHITE),
+	SWITCHING_SPIKE		(9	, "SwitchingSpike"	, EnumObjectRenderShape.SPIKE				, Color.RED),
+	EARTH_SPIKE			(13	, "EarthSpike"		, EnumObjectRenderShape.SPIKE				, Color.GREEN.darker()),
+	WATER_SPIKE			(14	, "WaterSpike"		, EnumObjectRenderShape.SPIKE				, Color.BLUE),
+	AIR_SPIKE			(15	, "AirSpike"		, EnumObjectRenderShape.SPIKE				, Color.CYAN.darker()),
+	FIRE_SPIKE			(16	, "FireSpike"		, EnumObjectRenderShape.SPIKE				, Color.ORANGE),
+	EXIT				(10	, "Exit"			, EnumObjectRenderShape.CIRCLE				, Color.PINK);
+	// @format-on
 	
-	PLAYER(0, "Player", EnumObjectRenderShape.PLAYER, Color.GREEN.darker()), SOLID_WALL(1, "SolidWall",
-		EnumObjectRenderShape.FULL_SQUARE, Color.WHITE), EARTH_WALL(2, "EarthWall", EnumObjectRenderShape.FULL_SQUARE,
-			Color.GREEN.darker()), WATER_WALL(3, "WaterWall", EnumObjectRenderShape.FULL_SQUARE, Color.BLUE), AIR_WALL(
-				4, "AirWall", EnumObjectRenderShape.FULL_SQUARE,
-				Color.CYAN.darker()), FIRE_WALL(5, "FireWall", EnumObjectRenderShape.FULL_SQUARE, Color.ORANGE), STAR1(
-					6, "Star1", EnumObjectRenderShape.STAR, Color.RED), STAR2(11, "Star2", EnumObjectRenderShape.STAR,
-						Color.GREEN), STAR3(12, "Star3", EnumObjectRenderShape.STAR, Color.BLUE), ELEMENT_SWITCHER(7,
-							"ElementSwitcher", EnumObjectRenderShape.ELEMENT_SWITCHER, Color.WHITE), FLYING_CROSS(8,
-								"FlyingCross", EnumObjectRenderShape.CROSS, Color.WHITE), SWITCHING_SPIKE(9,
-									"SwitchingSpike", EnumObjectRenderShape.TRIANGLE_UP,
-									Color.RED), EXIT(10, "Exit", EnumObjectRenderShape.CIRCLE, Color.PINK);
-									
 	private static final String[] NAMES;
 	
 	private final int id;

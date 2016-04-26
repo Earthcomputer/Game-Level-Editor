@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 public enum EnumObjectRenderShape
 {
-	FULL_SQUARE, PLAYER, STAR, ELEMENT_SWITCHER, CROSS, TRIANGLE_UP, CIRCLE;
+	FULL_SQUARE, PLAYER, STAR, ELEMENT_SWITCHER, CROSS, SPIKE, CIRCLE;
 	
 	private static final BufferedImage STAR_IMAGE;
 	
@@ -59,7 +59,7 @@ public enum EnumObjectRenderShape
 				g.drawLine(x + 3, y + 3, x + 13, y + 13);
 				g.drawLine(x + 3, y + 13, x + 13, y + 3);
 				break;
-			case TRIANGLE_UP:
+			case SPIKE:
 				g.fillPolygon(new int[] { x + 8, x, x + 16 }, new int[] { y + 8, y + 16, y + 16 }, 3);
 				break;
 			case CIRCLE:
