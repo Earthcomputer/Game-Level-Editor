@@ -22,7 +22,8 @@ public enum EnumObjectType
 	AIR_SPIKE			(15	, "AirSpike"		, EnumObjectRenderShape.SPIKE				, Color.CYAN.darker()),
 	FIRE_SPIKE			(16	, "FireSpike"		, EnumObjectRenderShape.SPIKE				, Color.ORANGE),
 	EXIT				(10	, "Exit"			, EnumObjectRenderShape.CIRCLE				, Color.PINK),
-	ENEMY_BLOCKER		(17	, "EnemyBlocker"	, EnumObjectRenderShape.FULL_SQUARE			, Color.RED);
+	ENEMY_BLOCKER		(17	, "EnemyBlocker"	, EnumObjectRenderShape.FULL_SQUARE			, Color.RED),
+	MUD					(18	, "Mud"				, EnumObjectRenderShape.FULL_SQUARE			, Color.RED.darker().darker());
 	// @format-on
 	
 	private static final String[] NAMES;
