@@ -504,6 +504,7 @@ public class LevelEditor
 			public void windowClosing(WindowEvent e)
 			{
 				timer.stop();
+				System.exit(0);
 			}
 			
 			@Override
