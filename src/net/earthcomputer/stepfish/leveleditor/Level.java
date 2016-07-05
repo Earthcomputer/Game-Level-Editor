@@ -1,4 +1,4 @@
-package net.earthcomputer.githubgame.leveleditor;
+package net.earthcomputer.stepfish.leveleditor;
 
 import java.util.Collections;
 import java.util.List;
