@@ -2,9 +2,8 @@ package net.earthcomputer.stepfish.leveleditor;
 
 import java.awt.Color;
 
-public enum EnumObjectType
-{
-	// @format-off
+public enum EnumObjectType {
+	// @formatter:off
 	PLAYER				(0	, "Player"			, EnumObjectRenderShape.PLAYER				, Color.GREEN.darker()),
 	SOLID_WALL			(1	, "SolidWall"		, EnumObjectRenderShape.FULL_SQUARE			, Color.WHITE),
 	EARTH_WALL			(2	, "EarthWall"		, EnumObjectRenderShape.FULL_SQUARE			, Color.GREEN.darker()),
@@ -24,72 +23,63 @@ public enum EnumObjectType
 	EXIT				(10	, "Exit"			, EnumObjectRenderShape.CIRCLE				, Color.PINK),
 	ENEMY_BLOCKER		(17	, "EnemyBlocker"	, EnumObjectRenderShape.FULL_SQUARE			, Color.RED),
 	MUD					(18	, "Mud"				, EnumObjectRenderShape.FULL_SQUARE			, Color.RED.darker().darker());
-	// @format-on
-	
+	// @formatter:on
+
 	private static final String[] NAMES;
-	
+
 	private final int id;
 	private final String name;
 	private final EnumObjectRenderShape shape;
 	private final Color renderColor;
-	
-	private EnumObjectType(int id, String name, EnumObjectRenderShape shape, Color renderColor)
-	{
+
+	private EnumObjectType(int id, String name, EnumObjectRenderShape shape, Color renderColor) {
 		this.id = id;
 		this.name = name;
 		this.shape = shape;
 		this.renderColor = renderColor;
 	}
-	
-	public int getID()
-	{
+
+	public int getID() {
 		return id;
 	}
-	
-	public String getName()
-	{
+
+	public String getName() {
 		return name;
 	}
-	
-	public EnumObjectRenderShape getRenderShape()
-	{
+
+	public EnumObjectRenderShape getRenderShape() {
 		return shape;
 	}
-	
-	public Color getRenderColor()
-	{
+
+	public Color getRenderColor() {
 		return renderColor;
 	}
-	
-	public static EnumObjectType byID(int id)
-	{
-		for(EnumObjectType type : values())
-		{
-			if(type.id == id) return type;
+
+	public static EnumObjectType byID(int id) {
+		for (EnumObjectType type : values()) {
+			if (type.id == id)
+				return type;
 		}
 		return null;
 	}
-	
-	public static EnumObjectType byName(String name)
-	{
-		for(EnumObjectType type : values())
-		{
-			if(type.name.equals(name)) return type;
+
+	public static EnumObjectType byName(String name) {
+		for (EnumObjectType type : values()) {
+			if (type.name.equals(name))
+				return type;
 		}
 		return null;
 	}
-	
-	public static String[] getAllNames()
-	{
+
+	public static String[] getAllNames() {
 		return NAMES;
 	}
-	
-	static
-	{
+
+	static {
 		EnumObjectType[] values = values();
 		NAMES = new String[values.length];
-		for(int i = 0; i < values.length; i++)
+		for (int i = 0; i < values.length; i++)
 			NAMES[i] = values[i].name;
 	}
-	
+
 }

@@ -2,6 +2,7 @@ package net.earthcomputer.stepfish.leveleditor;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -73,41 +74,35 @@ public class LevelEditor {
 
 		if (args.length != 0) {
 			editingFile = new File(args[0]);
-		}
-
-		int answer = JOptionPane.showOptionDialog(null, "What do you want to do?", TITLE, JOptionPane.DEFAULT_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Create New", "Open" }, "Create New");
-		if (answer == 0) {
-			String name = JOptionPane.showInputDialog(null, "Enter a name for this level:", TITLE,
-					JOptionPane.QUESTION_MESSAGE);
-			if (name == null)
-				return;
-			String widthString = JOptionPane.showInputDialog(null, "Enter the width of the level:", TITLE,
-					JOptionPane.QUESTION_MESSAGE);
-			int width;
-			try {
-				width = Integer.parseInt(widthString);
-			} catch (Exception e) {
+			if (!editingFile.isFile()) {
+				System.out.println("The specified file does not exist");
 				return;
 			}
-			if (width <= 0)
-				return;
-			String heightString = JOptionPane.showInputDialog(null, "Enter the height of the level:", TITLE,
-					JOptionPane.QUESTION_MESSAGE);
-			int height;
 			try {
-				height = Integer.parseInt(heightString);
-			} catch (Exception e) {
+				open(new BufferedInputStream(new FileInputStream(editingFile)));
+			} catch (WrongFormatException e) {
+				System.err.println("The specified file has invalid format");
+				System.err.println(e);
+				return;
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			int answer = JOptionPane.showOptionDialog(null, "What do you want to do?", TITLE,
+					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+					new Object[] { "Create New", "Open" }, "Create New");
+			if (answer == 0) {
+				String name = JOptionPane.showInputDialog(null, "Enter a name for this level:", TITLE,
+						JOptionPane.QUESTION_MESSAGE);
+				if (name == null)
+					return;
+				editingLevel = new Level(name, 640, 480, new ArrayList<GameObject>());
+			} else if (answer == 1) {
+				if (!userPressedOpen(false))
+					return;
+			} else if (answer == JOptionPane.CLOSED_OPTION) {
 				return;
 			}
-			if (height <= 0)
-				return;
-			editingLevel = new Level(name, width, height, new ArrayList<GameObject>());
-		} else if (answer == 1) {
-			if (!userPressedOpen(false))
-				return;
-		} else if (answer == JOptionPane.CLOSED_OPTION) {
-			return;
 		}
 
 		window = new JFrame();
@@ -322,36 +317,30 @@ public class LevelEditor {
 
 				});
 
-				inputs.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "changeDimensions");
-				actions.put("changeDimensions", new AbstractAction() {
-					private static final long serialVersionUID = 860734003639836461L;
+				inputs.put(KeyStroke.getKeyStroke(KeyEvent.VK_H, 0), "showHelp");
+				actions.put("showHelp", new AbstractAction() {
+					private static final long serialVersionUID = -8919250779675846688L;
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						String newWidthString = JOptionPane.showInputDialog(null, "Enter the new width:",
-								"Enter New Dimensions", JOptionPane.QUESTION_MESSAGE);
-						int newWidth;
-						try {
-							newWidth = Integer.parseInt(newWidthString);
-						} catch (Exception e1) {
-							return;
-						}
-						if (newWidth <= 0)
-							return;
-						String newHeightString = JOptionPane.showInputDialog(null, "Enter the new height:",
-								"Enter New Dimensions", JOptionPane.QUESTION_MESSAGE);
-						int newHeight;
-						try {
-							newHeight = Integer.parseInt(newHeightString);
-						} catch (Exception e1) {
-							return;
-						}
-						if (newHeight <= 0)
-							return;
-						editingLevel.levelWidth = newWidth;
-						editingLevel.levelHeight = newHeight;
+						// @formatter:off
+						String help = "Common operations:\n"
+								+ "- Left click to place object\n"
+								+ "- Right click to remove object\n"
+								+ "- Move around using the arrow keys\n"
+								+ "- Ctrl + S = Save level\n"
+								+ "- T = Change the thing you're placing\n"
+								+ "- N = Change the name of the level\n"
+								+ "\n"
+								+ "Less common operations:\n"
+								+ "- Ctrl + O = Open level\n"
+								+ "- Shift + S = Save As\n"
+								+ "- G = Go to location\n"
+								+ "- S = Snap to grid on/off\n"
+								+ "- R = Replace existing objects on/off";
+						// @formatter:on
+						JOptionPane.showMessageDialog(null, help, "Help", JOptionPane.INFORMATION_MESSAGE);
 					}
-
 				});
 
 				addMouseListener(new MouseAdapter() {
@@ -427,6 +416,9 @@ public class LevelEditor {
 				g.drawString(String.format("Placing type: %s", objectType.getName()), 2, 20);
 				g.drawString(String.format("Grid snap: %s", gridSnap ? "On" : "Off"), 2, 30);
 				g.drawString(String.format("Auto-replace: %s", replace ? "On" : "Off"), 2, 40);
+				Font currentFont = g.getFont();
+				g.setFont(new Font(currentFont.getFamily(), Font.BOLD, currentFont.getSize()));
+				g.drawString("Press H for help", 2, 50);
 			}
 		});
 
@@ -454,19 +446,25 @@ public class LevelEditor {
 		});
 
 		window.addWindowListener(new WindowAdapter() {
-
 			@Override
 			public void windowClosing(WindowEvent e) {
-				timer.stop();
-				System.exit(0);
+				if (JOptionPane.showConfirmDialog(null,
+						"Are you sure you want to exit?\nMake sure you have saved your work.", "Confirm Exit",
+						JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					timer.stop();
+					window.dispose();
+				}
 			}
+		});
 
+		window.addWindowFocusListener(new WindowAdapter() {
 			@Override
 			public void windowLostFocus(WindowEvent e) {
 				movingUp = movingDown = movingLeft = movingRight = false;
 			}
-
 		});
+
+		window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		window.setResizable(false);
 		window.getContentPane().setPreferredSize(new Dimension(640, 480));
 		window.pack();
