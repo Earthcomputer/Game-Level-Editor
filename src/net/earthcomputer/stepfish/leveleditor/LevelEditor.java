@@ -385,29 +385,31 @@ public class LevelEditor {
 
 			@Override
 			public void paintComponent(Graphics g) {
+				int width = getWidth(), height = getHeight();
+
 				g.setColor(Color.BLACK);
-				g.fillRect(0, 0, 640, 480);
+				g.fillRect(0, 0, width, height);
 				synchronized (editingLevel.objects) {
 					for (GameObject object : editingLevel.objects) {
 						object.render(scrollX, scrollY, g);
 					}
 				}
 				g.setColor(Color.GRAY);
-				for (int i = (scrollX < 0 ? 0 : 16) - (scrollX % 16); i < 640; i += 16) {
-					g.drawLine(i, 0, i, 480);
+				for (int i = (scrollX < 0 ? 0 : 16) - (scrollX % 16); i < width; i += 16) {
+					g.drawLine(i, 0, i, height);
 				}
-				for (int i = (scrollY < 0 ? 0 : 16) - (scrollY % 16); i < 480; i += 16) {
-					g.drawLine(0, i, 640, i);
+				for (int i = (scrollY < 0 ? 0 : 16) - (scrollY % 16); i < height; i += 16) {
+					g.drawLine(0, i, width, i);
 				}
 				g.setColor(Color.RED);
-				if (scrollX < 0 && scrollX >= -640 && scrollY >= -480 && scrollY < 480)
-					g.drawLine(-scrollX, Math.max(0, -scrollY), -scrollX, Math.min(480, 480 - scrollY));
-				if (scrollX >= 0 && scrollX < 640 && scrollY >= -480 && scrollY < 480)
-					g.drawLine(640 - scrollX, Math.max(0, -scrollY), 640 - scrollX, Math.min(480, 480 - scrollY));
-				if (scrollX >= -640 && scrollX < 640 && scrollY < 0 && scrollY >= -480)
-					g.drawLine(Math.max(0, -scrollX), -scrollY, Math.min(640, 640 - scrollX), -scrollY);
-				if (scrollX >= -640 && scrollX < 640 && scrollY >= 0 && scrollY < 480)
-					g.drawLine(Math.max(0, -scrollX), 480 - scrollY, Math.min(640, 640 - scrollX), 480 - scrollY);
+				if (scrollX < 0 && scrollX >= -width && scrollY >= -height && scrollY < height)
+					g.drawLine(-scrollX, Math.max(0, -scrollY), -scrollX, Math.min(height, 480 - scrollY));
+				if (scrollX >= 0 && scrollX < width && scrollY >= -height && scrollY < height)
+					g.drawLine(640 - scrollX, Math.max(0, -scrollY), 640 - scrollX, Math.min(height, 480 - scrollY));
+				if (scrollX >= -width && scrollX < width && scrollY < 0 && scrollY >= -height)
+					g.drawLine(Math.max(0, -scrollX), -scrollY, Math.min(width, 640 - scrollX), -scrollY);
+				if (scrollX >= -width && scrollX < width && scrollY >= 0 && scrollY < height)
+					g.drawLine(Math.max(0, -scrollX), 480 - scrollY, Math.min(width, 640 - scrollX), 480 - scrollY);
 				g.setColor(Color.WHITE);
 				Point hoveredLocation = getHoveredLocation();
 				if (hoveredLocation != null)
@@ -467,6 +469,7 @@ public class LevelEditor {
 		window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		window.setResizable(false);
 		window.getContentPane().setPreferredSize(new Dimension(640, 480));
+		window.getContentPane().setMaximumSize(new Dimension(640, 480));
 		window.pack();
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);

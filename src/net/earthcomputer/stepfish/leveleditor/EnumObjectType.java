@@ -1,42 +1,54 @@
 package net.earthcomputer.stepfish.leveleditor;
 
-import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public enum EnumObjectType {
 	// @formatter:off
-	PLAYER				(0	, "Player"			, EnumObjectRenderShape.PLAYER				, Color.GREEN.darker()),
-	SOLID_WALL			(1	, "SolidWall"		, EnumObjectRenderShape.FULL_SQUARE			, Color.WHITE),
-	EARTH_WALL			(2	, "EarthWall"		, EnumObjectRenderShape.FULL_SQUARE			, Color.GREEN.darker()),
-	WATER_WALL			(3	, "WaterWall"		, EnumObjectRenderShape.FULL_SQUARE			, Color.BLUE),
-	AIR_WALL			(4	, "AirWall"			, EnumObjectRenderShape.FULL_SQUARE			, Color.CYAN.darker()),
-	FIRE_WALL			(5	, "FireWall"		, EnumObjectRenderShape.FULL_SQUARE			, Color.ORANGE),
-	STAR1				(6	, "Star1"			, EnumObjectRenderShape.STAR				, Color.RED),
-	STAR2				(11	, "Star2"			, EnumObjectRenderShape.STAR				, Color.GREEN),
-	STAR3				(12	, "Star3"			, EnumObjectRenderShape.STAR				, Color.BLUE),
-	ELEMENT_SWITCHER	(7	, "ElementSwitcher"	, EnumObjectRenderShape.ELEMENT_SWITCHER	, Color.WHITE),
-	FLYING_CROSS		(8	, "FlyingCross"		, EnumObjectRenderShape.CROSS				, Color.WHITE),
-	SWITCHING_SPIKE		(9	, "SwitchingSpike"	, EnumObjectRenderShape.SPIKE				, Color.RED),
-	EARTH_SPIKE			(13	, "EarthSpike"		, EnumObjectRenderShape.SPIKE				, Color.GREEN.darker()),
-	WATER_SPIKE			(14	, "WaterSpike"		, EnumObjectRenderShape.SPIKE				, Color.BLUE),
-	AIR_SPIKE			(15	, "AirSpike"		, EnumObjectRenderShape.SPIKE				, Color.CYAN.darker()),
-	FIRE_SPIKE			(16	, "FireSpike"		, EnumObjectRenderShape.SPIKE				, Color.ORANGE),
-	EXIT				(10	, "Exit"			, EnumObjectRenderShape.CIRCLE				, Color.PINK),
-	ENEMY_BLOCKER		(17	, "EnemyBlocker"	, EnumObjectRenderShape.FULL_SQUARE			, Color.RED),
-	MUD					(18	, "Mud"				, EnumObjectRenderShape.FULL_SQUARE			, Color.RED.darker().darker());
+	PLAYER				(0	, "Player"			, "player"),
+	SOLID_WALL			(1	, "SolidWall"		, "wall"),
+	EARTH_WALL			(2	, "EarthWall"		, "wall_earth"),
+	WATER_WALL			(3	, "WaterWall"		, "wall_water"),
+	AIR_WALL			(4	, "AirWall"			, "wall_air"),
+	FIRE_WALL			(5	, "FireWall"		, "wall_fire"),
+	STAR1				(6	, "Star1"			, "star1"),
+	STAR2				(11	, "Star2"			, "star2"),
+	STAR3				(12	, "Star3"			, "star3"),
+	ELEMENT_SWITCHER	(7	, "ElementSwitcher"	, "element_switcher"),
+	FLYING_CROSS		(8	, "FlyingCross"		, "flying_cross"),
+	SWITCHING_SPIKE		(9	, "SwitchingSpike"	, "spike_switching"),
+	EARTH_SPIKE			(13	, "EarthSpike"		, "spike_earth"),
+	WATER_SPIKE			(14	, "WaterSpike"		, "spike_water"),
+	AIR_SPIKE			(15	, "AirSpike"		, "spike_air"),
+	FIRE_SPIKE			(16	, "FireSpike"		, "spike_fire"),
+	EXIT				(10	, "Exit"			, "exit"),
+	ENEMY_BLOCKER		(17	, "EnemyBlocker"	, "enemy_blocker"),
+	MUD					(18	, "Mud"				, "mud");
 	// @formatter:on
 
 	private static final String[] NAMES;
 
 	private final int id;
 	private final String name;
-	private final EnumObjectRenderShape shape;
-	private final Color renderColor;
+	private final String textureName;
+	private BufferedImage texture;
 
-	private EnumObjectType(int id, String name, EnumObjectRenderShape shape, Color renderColor) {
+	private EnumObjectType(int id, String name, String textureName) {
 		this.id = id;
 		this.name = name;
-		this.shape = shape;
-		this.renderColor = renderColor;
+		this.textureName = textureName;
+		loadTexture();
+	}
+
+	private void loadTexture() {
+		try {
+			texture = ImageIO.read(EnumObjectType.class.getResourceAsStream("/" + textureName + ".png"));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public int getID() {
@@ -47,12 +59,8 @@ public enum EnumObjectType {
 		return name;
 	}
 
-	public EnumObjectRenderShape getRenderShape() {
-		return shape;
-	}
-
-	public Color getRenderColor() {
-		return renderColor;
+	public void render(int x, int y, Graphics g) {
+		g.drawImage(texture, x, y, null);
 	}
 
 	public static EnumObjectType byID(int id) {

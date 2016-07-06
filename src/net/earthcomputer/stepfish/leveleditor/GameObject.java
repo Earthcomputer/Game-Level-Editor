@@ -15,7 +15,7 @@ public class GameObject {
 	}
 
 	public void render(int scrollX, int scrollY, Graphics g) {
-		objectType.getRenderShape().render(g, x - scrollX, y - scrollY, objectType.getRenderColor());
+		objectType.render(x - scrollX, y - scrollY, g);
 	}
 
 }
