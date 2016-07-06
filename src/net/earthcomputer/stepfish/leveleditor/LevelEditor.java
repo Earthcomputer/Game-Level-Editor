@@ -580,6 +580,24 @@ public class LevelEditor {
 	}
 
 	public static void save(OutputStream output) throws IOException {
+		boolean validObjects;
+		validObjects = checkObjectExists(EnumObjectType.PLAYER, false, "There is no player in this level!");
+		if (validObjects) {
+			validObjects = checkObjectExists(EnumObjectType.EXIT, false, "There is no exit in this level!");
+		}
+		if (validObjects) {
+			validObjects = checkObjectExists(EnumObjectType.STAR1, true,
+					"There should be exactly 1 of each type of star!");
+		}
+		if (validObjects) {
+			validObjects = checkObjectExists(EnumObjectType.STAR2, true,
+					"There should be exactly 1 of each type of star!");
+		}
+		if (validObjects) {
+			validObjects = checkObjectExists(EnumObjectType.STAR3, true,
+					"There should be exactly 1 of each type of star!");
+		}
+
 		DataOutputStream dataOutput = new DataOutputStream(output);
 
 		dataOutput.writeInt(0x4748474D);
@@ -595,6 +613,24 @@ public class LevelEditor {
 			dataOutput.writeInt(object.y);
 			dataOutput.writeChar(object.objectType.getID());
 		}
+	}
+
+	private static boolean checkObjectExists(EnumObjectType type, boolean limitToOne, String warning) {
+		int count = 0;
+		for (GameObject object : editingLevel.objects) {
+			if (object.objectType == type) {
+				if (!limitToOne) {
+					return true;
+				} else {
+					count++;
+				}
+			}
+		}
+		if (count == 1) {
+			return true;
+		}
+		JOptionPane.showMessageDialog(null, warning + "\nSaving anyway.", "Invalid Level", JOptionPane.WARNING_MESSAGE);
+		return false;
 	}
 
 	public static File showOpenDialog() {
